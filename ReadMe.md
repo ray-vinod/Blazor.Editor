@@ -6,7 +6,7 @@ it's accept ReadOnly, Placeholder, Theme, Height etc
 
 Very simple to use add nuget package and use it.
 
-In this version 2.0.1 has update ui and core functions improvements like imeage search, resize, align etc and also package size optimiezed.
+In this version 2.0.1 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
 
 
 ## How to add package into project
