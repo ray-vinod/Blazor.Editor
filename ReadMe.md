@@ -81,7 +81,7 @@ dotnet add package Blazor.Editor --version 2.0.0
 
 ### Inserted image
 
-![Example Image](/wwwroot//images/image%20in%20editor.png)
+![Example Image](/wwwroot/images/image%20in%20editor.png)
 
 ### Resizing and formate image
 
