@@ -73,16 +73,16 @@ dotnet add package Blazor.Editor --version 2.0.0
 
 ### Editor
 
-![Example Image](/wwwroot/images/editor.png)
+![Editor](/wwwroot/images/editor.jpg)
 
-### Choose image
+### Image Selection
 
-![Example Image](/wwwroot/images/image%20choosing.png)
+![Image Selection](/wwwroot/images/image-choosing.jpg)
 
-### Inserted image
+### Inserted image in editor
 
-![Example Image](/wwwroot/images/image%20in%20editor.png)
+![Image into Editor](/wwwroot/images/image-in-editor.jpg)
 
-### Resizing and formate image
+### Resize and Format Options
 
-![Example Image](/wwwroot/images/resize%20options.png)
+![Format Options](/wwwroot/images/resize-options.jpg)
