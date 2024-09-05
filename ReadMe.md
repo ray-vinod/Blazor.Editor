@@ -6,22 +6,13 @@ it's accept ReadOnly, Placeholder, Theme, Height etc
 
 Very simple to use add nuget package and use it.
 
-In the version 2.0.0 has update ui and core functional improvements.
+In this version 2.0.1 has update ui and core functions improvements like imeage search, resize, align etc and also package size optimiezed.
 
-```
-@using Blazor.Editor
-
-<Editor @ref="@_quillNative" />
-
-@code{
-	private Editor? _quillNative;
-}
-```
 
 ## How to add package into project
 
 ```
-dotnet add package Blazor.Editor --version 2.0.0
+dotnet add package Blazor.Editor --version 2.0.1
 ```
 
 ## nuget package link
@@ -29,45 +20,37 @@ dotnet add package Blazor.Editor --version 2.0.0
 [https://www.nuget.org/packages/Blazor.Editor/]()
 
 ```
-<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">Quill native</h3>
-        <Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />  @*server endpoint*@
-    </div>
-    <div class="card-footer">
-        <button class="btn btn-primary" @onclick="SetHTMLAsync">
-            Set HTML
-        </button>
-        <button class="btn btn-primary" @onclick="GetHTMLAsync">
-            Get HTML
-        </button>
-        <div>
-            @_quillContent
-        </div>
-    </div>
+<div>
+	@*GalleryUrl is endpoint of your server's image gallery to show image list, if api endpoint is not provided then url image link is still working*@
+	<Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />
+</div>
+
+<div>
+	<button class="btn btn-primary" @onclick="SetHTMLAsync">Set HTML</button>
+        <button class="btn btn-primary" @onclick="GetHTMLAsync">Get HTML</button>
+</div>
+
+<div>
+	@_quillContent
 </div>
 
 @code {
+
 	private string? _quillContent;
-    private Editor? _quillNative;
+    	private Editor? _quillNative;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitializedAsync();
-    }
+    	public async Task SetHTMLAsync()
+    	{
+        	string img = "<p><img src='https://images.stockcake.com/public/5/0/2/502bbf64-d559-4efe-bba5-59ef7ffad5a8/toddler-baking-cookies-stockcake.jpg' /></p>";
+        	await _quillNative!.SetHTMLAsync(img);
+        	StateHasChanged();
+    	}
 
-    public async Task SetHTMLAsync()
-    {
-        string img = "<p><img src='https://images.stockcake.com/public/5/0/2/502bbf64-d559-4efe-bba5-59ef7ffad5a8/toddler-baking-cookies-stockcake.jpg' /></p>";
-        await _quillNative!.SetHTMLAsync(img);
-        StateHasChanged();
-    }
-
-    public async Task GetHTMLAsync()
-    {
-        _quillContent = await _quillNative!.GetHTMLAsync();
-        StateHasChanged();
-    }
+    	public async Task GetHTMLAsync()
+    	{
+        	_quillContent = await _quillNative!.GetHTMLAsync();
+        	StateHasChanged();
+    	}
 }
 ```
 
