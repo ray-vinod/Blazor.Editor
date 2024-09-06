@@ -20,6 +20,10 @@ dotnet add package Blazor.Editor --version 2.0.1
 [https://www.nuget.org/packages/Blazor.Editor/]()
 
 ```
+@page "/article"
+@rendermode InteractiveServer
+@using Blazor.Editor
+
 <div>
 	@*GalleryUrl is endpoint of your server's image gallery to show image list, if api endpoint is not provided then url image link is still working*@
 	<Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />
