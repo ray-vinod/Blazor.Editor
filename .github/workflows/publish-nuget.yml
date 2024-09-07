@@ -1,0 +1,59 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate version
+        run: |
+          if [[ ! ${{ github.ref }} =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid version tag!"
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release --no-build
+
+      # - name: Push to nuget.org
+      #   run: dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+
+      - name: Push to GitHub Packages
+        run: dotnet nuget push "bin/Release/*.nupkg" --source github --api-key ${{ secrets.TOKEN_SECRET }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: "Release ${{ github.ref }}"
+          draft: false
+          prerelease: false
+          body: "Release notes for version ${{ github.ref }}"
+
+      - name: Upload NuGet package to GitHub Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "bin/Release/*.nupkg"
+          asset_name: "YourPackageName.${{ github.ref }}.nupkg"
+          asset_content_type: application/octet-stream
