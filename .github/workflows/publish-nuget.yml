@@ -38,7 +38,7 @@ jobs:
         run: dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
 
       - name: Push to GitHub Packages
-        run: dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.TOKEN_SECRET }}
+        run: dotnet nuget push "bin/Release/*.nupkg" --source github --api-key ${{ secrets.TOKEN_SECRET }}
 
       - name: Create GitHub Release
         id: create_release
