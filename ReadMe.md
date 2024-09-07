@@ -60,16 +60,16 @@ dotnet add package Blazor.Editor --version 2.0.1
 
 ### Editor
 
-![Editor](/wwwroot/images/editor.jpg)
+![Editor](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/image_inclluded/wwwroot/images/editor.jpg)
 
 ### Image Selection
 
-![Image Selection](/wwwroot/images/image-choosing.jpg)
+![Image Selection](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/image_inclluded/wwwroot/images/image-choosing.jpg)
 
 ### Inserted image in editor
 
-![Image into Editor](/wwwroot/images/image-in-editor.jpg)
+![Image into Editor](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/image_inclluded/wwwroot/images/image-in-editor.jpg)
 
 ### Resize and Format Options
 
-![Format Options](/wwwroot/images/resize-options.jpg)
+![Format Options](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/image_inclluded/wwwroot/images/resize-options.jpg)

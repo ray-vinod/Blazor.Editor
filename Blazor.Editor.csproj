@@ -4,17 +4,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-     <PackageId>Blazor.Editor</PackageId>
-    <Version>2.0.1</Version>
+    <PackageId>Blazor.Editor</PackageId>
+    <Version>2.0.2</Version>
     <Authors>ray-vinod</Authors>
     <Product>BlazorEditor</Product>
-    <Company>Self</Company>
-    <Description>It is quilljs@2.0.2 implemented blzor editor with get and set content</Description>
+    <Company>ray-vinod</Company>
+    <Title>Blazor Editor</Title>
+    <PackageIcon></PackageIcon>
+    <PackageReadme>ReadMe.md</PackageReadme>
+    <PackageDescription>It is quilljs@2.0.2 implemented blzor editor with get and set content</PackageDescription>
     <PackageTags>BlazorEditor;Blazor Editor;Blazor.Editor;Editor;EditorImageTool;EditorImageResize;Blog;BlogEditor;</PackageTags>
-    <PackageProjectUrl>https://github.com/ray-vinod/BlogApp</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/ray-vinod/Blazor.Editor.git</PackageProjectUrl>
     <License>MIT</License>
   </PropertyGroup>
 
+
+  <ItemGroup>
+    <None Include="ReadMe.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
