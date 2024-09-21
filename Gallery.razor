@@ -1,5 +1,3 @@
-@using System.Text.Json
-
 @if (IsVisible)
 {
     <div class="g-modal-container">
@@ -22,8 +20,8 @@
             @foreach (var image in Images!)
                 {
                     <div @onclick="() => OnImageClick(image)" class="g-image-list-item">
-                        <img src="@image.Url" class="g-image-icon" alt="@image.Name" />
-                        <p class="g-image-name">@image.Name</p>
+                        <img src="@image.Src" class="g-image-icon" alt="@image.Alt" />
+                        <p class="g-image-name">@image.Alt</p>
                     </div>
                 }
             </div>
@@ -32,13 +30,9 @@
 }
 
 @code {
-    [Parameter]
-    public List<ImageFile>? Images { get; set; }
-
+    [Parameter]public List<ImageFile>? Images { get; set; }
     [Parameter] public EventCallback<ImageFile> OnImageClicked { get; set; }
-
     [Parameter] public bool IsVisible { get; set; } = false;
-
     [Parameter] public EventCallback OnClose { get; set; }
     [Parameter] public EventCallback<ChangeEventArgs> OnSearchTexChanged { get; set; }
 
@@ -55,8 +49,8 @@
         {
             OnImageClicked.InvokeAsync(new ImageFile
                 {
-                    Url = _linkUrl,
-                    Name = string.Empty
+                    Src = _linkUrl,
+                    Alt = string.Empty
                 });
         }
     }

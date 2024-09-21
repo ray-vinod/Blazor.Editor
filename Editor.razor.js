@@ -1,1 +1,214 @@
-let quill, endpoint, editorInstance, BlockEmbed = Quill.import("blots/block/embed"); class ImageBlot extends BlockEmbed { static create(e) { let t = super.create(); return t.setAttribute("src", e.url), e.alt && t.setAttribute("alt", e.alt), t.classList.add("quill-editor-image-border"), t } static value(e) { return { url: e.getAttribute("src"), alt: e.getAttribute("alt") } } update(e) { e.url && this.domNode.setAttribute("src", e.url), e.alt && this.domNode.setAttribute("alt", e.alt), this.domNode.classList.add("quill-editor-image-border") } } ImageBlot.blotName = "image", ImageBlot.tagName = "img", window.ImageResize ? (Quill.register("modules/imageResize", ImageResize), Quill.register(ImageBlot, !0)) : console.error("image resize module is not ready"); let toolbarOptions = [["bold", "italic", "underline", "strike"], ["blockquote", "code-block"], ["link", "image", "video"], [{ list: "ordered" }, { list: "bullet" }], [{ script: "sub" }, { script: "super" }], [{ indent: "-1" }, { indent: "+1" }], [{ size: ["small", !1, "large", "huge"] }], [{ header: [1, 2, 3, 4, 5, 6, !1] }], [{ color: [] }, { background: [] }], [{ font: [] }], [{ align: [] }],]; export const initQuill = (e, t, i, l, r) => { endpoint = t; let o = {}, a = []; i ? o.toolbar = { container: [] } : (o.toolbar = { container: toolbarOptions, handlers: { image: imageHandler } }, o.imageResize = {}, a = a = ["bold", "italic", "underline", "strike", "blockquote", "code-block", "list", "header", "script", "size", "color", "background", "align", "font", "image", "video", "indent", "link"]); var n = { debug: "info", modules: o, formats: a, placeholder: l, readOnly: i, theme: r }; quill = new window.Quill(e, n), i ? e.classList.add("hide-toolbar") : e.classList.remove("hide-toolbar") }; export const setQuillHTML = e => { quill && (quill.root.innerHTML = e) }; export const getQuillHTML = () => quill ? quill.root.innerHTML : ""; export const imageHandler = async () => { var e = await editorInstance.invokeMethodAsync("ShowImageModal") }; export const fetchImagesAsync = async () => { try { let e = (await (await fetch(endpoint)).json()).map(e => { let t = e.trim(); return { url: t, name: t ? t.split("/").pop() : "" } }); return JSON.stringify(e) } catch (t) { return console.error("Error fetching images"), JSON.stringify([]) } }; export const insertImage = (e, t, i) => { quill.hasFocus() || quill.focus(); let l = quill.getSelection(); if (l || (l = { index: quill.getLength(), length: 0 }), e) { let r = t.trim(); i = "", r && ((i = r.split("/").pop()).includes("?") && (i = i.split("?")[0]), i || (i = "image")), /\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(r) ? (console.log("Inserting image:", r, "with name:", i), quill.insertEmbed(l.index, "image", { url: r, alt: i })) : alert("Please enter a proper image URL (e.g., ending in .jpg, .png)") } else console.log("Inserting local image with name:", i), quill.insertEmbed(l.index, "image", { url: t, alt: i }) }; export const registerEditorInstance = e => editorInstance = e;
+let quill;
+let endpoint;
+let editorInstance;
+
+const BlockEmbed = Quill.import('blots/block/embed');
+class ImageBlot extends BlockEmbed {
+    static create(value) {
+        let node = super.create();
+        if (!value || !value.src) {
+            node.classList.add('unwanted');
+            return node;
+        }
+
+        node.setAttribute('src', value.src);
+        node.setAttribute('alt', value.alt);
+        node.classList.add('quill-editor-image-border');
+        return node;
+    }
+
+    static value(node) {
+        return {
+            src: node.getAttribute('src'),
+            alt: node.getAttribute('alt')
+        };
+    }
+
+    update(attrs) {
+        if (attrs.src && attrs.alt) {
+            this.domNode.setAttribute('src', attrs.src);
+            this.domNode.setAttribute('alt', attrs.alt);
+        }
+        this.domNode.classList.add('quill-editor-image-border');
+    }
+}
+
+ImageBlot.blotName = 'image';
+ImageBlot.tagName = 'img';
+Quill.register(ImageBlot, true);
+
+window.ImageResize ? Quill.register('modules/imageResize', ImageResize) : undefined;
+
+const toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    ['link', 'image', 'video'],
+
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+];
+
+export const initQuill = (quillElement, url, readOnly, placeholder, theme) => {
+    endpoint = url;
+    const modules = {
+        toolbar: readOnly ? false : {
+            container: toolbarOptions,
+            handlers: { image: imageHandler },
+        },
+        imageResize: !readOnly ? {} : undefined
+    };
+
+    var options = {
+        debug: 'info',
+        theme: theme,
+        modules: modules,
+        placeholder: placeholder,
+        readOnly: readOnly,
+        formats: !readOnly ? [
+            'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'list',
+            'header', 'script', 'size', 'color', 'background', 'align', 'font', 'image',
+            'video', 'indent', 'link'
+        ] : []
+    };
+
+    quill = new window.Quill(quillElement, options);
+    quillElement.classList.toggle('hide-toolbar', readOnly);
+
+    quill.root.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        droppedFileHandler(event);
+    });
+}
+
+const droppedFileHandler = async (event) => {
+    const file = event.dataTransfer.files[0];
+    if (!file || !isValidImage(file)) {
+        return console.error('Invalid image file');
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+        return console.error('Image size exceeds 2MB');
+    }
+
+    const imageBase64 = await getBase64Image(event);
+    imageBase64 === null ? console.error('Error reading file') : insertImage(false, imageBase64, file.name);
+}
+
+const getBase64Image = (event) => {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        const file = event.dataTransfer.files[0];
+        reader.onload = (event) => {
+            resolve(event.target.result);
+        };
+
+        reader.onerror = () => {
+            console.error('Error reading file');
+            resolve(null);
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+const removeInvalidImageTags = () => {
+    quill.root.querySelectorAll('img.unwanted')
+        .forEach(img => img.remove());
+};
+
+const isValidImage = (file) => ['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp', 'image/bmp', 'image/vnd.microsoft.icon'].includes(file.type);
+
+const getRange = () => quill.getSelection() || { index: quill.getLength(), length: 0 };
+
+export const setQuillHTML = (html) => {
+    if (quill && html) {
+        const range = getRange();
+        const currentHTML = quill.root.innerHTML;
+        quill.root.innerHTML = `${currentHTML}${html}`;
+        quill.setSelection(range.index + html.length, 0);
+    }
+}
+
+export const getQuillHTML = async () => {
+    if (quill) {
+        const html = quill.root.innerHTML;
+        const chunkSize = 16000;
+        const chunks = splitContentIntoChunks(html, chunkSize);
+        const promises = chunks.map((chunk, i) => editorInstance.invokeMethodAsync('ReceiveDataChunk', chunk, i, chunks.length));
+        await Promise.all(promises);
+    }
+}
+
+const splitContentIntoChunks = (content, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < content.length; i += chunkSize) {
+        chunks.push(content.slice(i, i + chunkSize));
+    }
+    return chunks;
+};
+
+export const setQuillContents = (content) => {
+    if (quill) {
+        const Delta = Quill.import('delta');
+        let jsonObject = JSON.parse(content);
+        let delta = new Delta(jsonObject.ops);
+        quill.setContents(delta);
+    }
+};
+
+export const getQuillContents = async () => {
+    if (quill) {
+        const delta = quill.getContents();
+        const content = JSON.stringify(delta);
+        const chunkSize = 16000;
+        const chunks = splitContentIntoChunks(content, chunkSize);
+        const promises = chunks.map((chunk, i) => editorInstance.invokeMethodAsync('ReceiveDataChunk', chunk, i, chunks.length));
+        await Promise.all(promises);
+    }
+};
+
+const imageHandler = async () => {
+    await editorInstance.invokeMethodAsync('ShowImageModal');
+}
+
+export const fetchImagesAsync = async () => {
+    try {
+        let response = await fetch(endpoint);
+        let images = await response.json();
+        return JSON.stringify(images.map(image => ({
+            src: image.trim(),
+            alt: image.split('/').pop()
+        })));
+    } catch (error) {
+        console.error('Error fetching images');
+        return JSON.stringify([]);
+    }
+}
+
+const insertImage = (isUrl, imageData, name) => {
+    const range = getRange();
+    const image = imageData.trim();
+    if (isUrl) {
+        name = image.split('/').pop().split('?')[0] || 'image';
+        if (!/\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(image)) {
+            console.error('Invalid image URL');
+            return;
+        }
+    }
+    quill.insertEmbed(range.index, 'image', { src: image, alt: name });
+    quill.setSelection(range.index + 1, 0);
+    setTimeout(removeInvalidImageTags(), 50);
+}
+
+export const registerEditorInstance = (dotnetHelper) => {
+    editorInstance = dotnetHelper;
+}
