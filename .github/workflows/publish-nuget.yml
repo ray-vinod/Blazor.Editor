@@ -10,72 +10,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate version
+      - name: Validate Tag
         run: |
-          if [[ ! ${{ github.ref_name }} =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Invalid version tag!"
+          if [[ ! ${{ github.ref }} =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid Tag & Version"
             exit 1
           fi
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
 
-      - name: Restore dependencies
+      - name: Restore Dependencies
         run: dotnet restore
 
-      - name: Build the project
+      - name: Run Tests
+        run: dotnet test --configuration Release --no-restore
+
+      - name: Build Project
         run: dotnet build --configuration Release --no-restore
 
-      - name: Pack NuGet package
-        run: dotnet pack --configuration Release --no-build
+      - name: Create NuGet
+        run: dotnet pack --configuration Release
 
-      - name: Check for existing version on NuGet.org
-        id: check_version
+      - name: Set Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Push To NuGet Gallery
         run: |
-          VERSION=${{ github.ref_name }}
-          # Strip the leading 'v' from the version
-          STRIPPED_VERSION=${VERSION:1}
+          dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} \
+          --skip-duplicate || echo "Package Blazor.Editor.${{ env.VERSION }}.nupkg already exists on NuGet. Skipping push."
 
-          # Query NuGet.org to check if the version exists
-          RESPONSE=$(curl -s -f "https://api.nuget.org/v3/registration5-semver1/your-package-name/index.json" | jq -r ".items[].items[] | select(.catalogEntry.version == \"$STRIPPED_VERSION\") | .catalogEntry.version")
+      - name: Push To GitHub
+        run: |
+          output=$(dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_SECRET }} --skip-duplicate)
+          echo "$output"
+          echo "$output" | grep -q 'already exists' && exit 1
 
-          if [ -n "$RESPONSE" ]; then
-            echo "Version $STRIPPED_VERSION already exists on NuGet.org. Stopping workflow."
-            exit 1
-          else
-            echo "Version $STRIPPED_VERSION does not exist on NuGet.org. Proceeding to publish."
-          fi
-
-      # - name: Push to nuget.org
-      #   if: steps.check_version.outcome == 'success'
-      #   run: dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
-
-      - name: Push to GitHub Packages
-        run: dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_Secret }}
-
-      - name: Create GitHub Release
+      - name: Create GitHub_Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: "Release ${{ github.ref_name }}"
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
-          body: "Release notes for version ${{ github.ref_name }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_API_Secret }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
 
-      - name: Upload NuGet package to GitHub Release
-        uses: actions/upload-release-asset@v1
+      - name: Push To GitHub_Release
+        uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "bin/Release/Blazor.Editor.${{ github.ref_name }}.nupkg"
-          asset_name: "Blazor.Editor.${{ github.ref_name }}.nupkg"
+          asset_path: bin/Release/Blazor.Editor.${{ env.VERSION }}.nupkg
+          asset_name: Blazor.Editor.${{ env.VERSION }}.nupkg
           asset_content_type: application/octet-stream
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_API_Secret }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
