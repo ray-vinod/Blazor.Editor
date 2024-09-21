@@ -100,20 +100,20 @@ dotnet add package Blazor.Editor --version 2.0.3
 
 ### Editor
 
-![Editor](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/editor.jpg)
+![Editor](/Images/editor.jpg)
 
 ### Image selection
 
-![Image selection](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-choosing.jpg)
+![Image selection](/Images/image-choosing.jpg)
 
 ### Image into editor
 
-![Inserted image](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-in-editor.jpg)
+![Inserted image](/Images/image-in-editor.jpg)
 
 ### Resize and Format options
 
-![Resize and Format](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/resize-options.jpg)
+![Resize and Format](/Images/resize-options.jpg)
 
 ### Quilljs Delta Object
 
-![Delta Object](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/delta-object.jpg)
+![Delta Object](/Images/delta-object.jpg)
