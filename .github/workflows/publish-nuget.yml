@@ -38,7 +38,7 @@ jobs:
       #   run: dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
 
       - name: Push to GitHub Packages
-        run: dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_Secret }}
 
       - name: Create GitHub Release
         id: create_release
@@ -50,7 +50,7 @@ jobs:
           prerelease: false
           body: "Release notes for version ${{ github.ref_name }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_Secret }}
 
       - name: Upload NuGet package to GitHub Release
         uses: actions/upload-release-asset@v1
@@ -60,4 +60,4 @@ jobs:
           asset_name: "YourPackageName.${{ github.ref_name }}.nupkg"
           asset_content_type: application/octet-stream
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_Secret }}
