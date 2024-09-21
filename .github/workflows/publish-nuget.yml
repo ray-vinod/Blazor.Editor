@@ -34,7 +34,25 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack --configuration Release --no-build
 
+      - name: Check for existing version on NuGet.org
+        id: check_version
+        run: |
+          VERSION=${{ github.ref_name }}
+          # Strip the leading 'v' from the version
+          STRIPPED_VERSION=${VERSION:1}
+
+          # Query NuGet.org to check if the version exists
+          RESPONSE=$(curl -s -f "https://api.nuget.org/v3/registration5-semver1/your-package-name/index.json" | jq -r ".items[].items[] | select(.catalogEntry.version == \"$STRIPPED_VERSION\") | .catalogEntry.version")
+
+          if [ -n "$RESPONSE" ]; then
+            echo "Version $STRIPPED_VERSION already exists on NuGet.org. Stopping workflow."
+            exit 1
+          else
+            echo "Version $STRIPPED_VERSION does not exist on NuGet.org. Proceeding to publish."
+          fi
+
       # - name: Push to nuget.org
+      #   if: steps.check_version.outcome == 'success'
       #   run: dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
 
       - name: Push to GitHub Packages
@@ -56,7 +74,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "bin/Release/*.nupkg"
+          asset_path: "bin/Release/Blazor.Editor.${{ github.ref_name }}.nupkg"
           asset_name: "Blazor.Editor.${{ github.ref_name }}.nupkg"
           asset_content_type: application/octet-stream
         env:
