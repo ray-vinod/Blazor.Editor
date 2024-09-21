@@ -11,16 +11,20 @@
     <Company>ray-vinod</Company>
     <Title>Blazor Editor</Title>
     <PackageIcon></PackageIcon>
-    <!-- <PackageReadmeFile>README.md</PackageReadmeFile> -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageDescription>It is quilljs@2.0.2 implemented blzor editor with get and set content</PackageDescription>
     <PackageTags>Blazor.Quill;Blazor Quill;BlazorEditor;Blazor Editor;Blazor.Editor;Editor;EditorImageTool;EditorImageResize;Blog;BlogEditor;</PackageTags>
     <PackageProjectUrl>https://github.com/ray-vinod/Blazor.Editor.git</PackageProjectUrl>
     <License>MIT</License>
   </PropertyGroup>
 
-    <!-- <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath="\"/>
-    </ItemGroup> -->
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="wwwroot/images/**" />
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
