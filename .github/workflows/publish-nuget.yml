@@ -50,12 +50,10 @@ jobs:
           output=$(dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_SECRET }} --skip-duplicate)
           echo "$output"
 
-          if [[ $? -ne 0 ]]; then
-            echo "An error occurred while pushing the package."
+          if echo "$output" | grep -q 'already exists'; then
+            echo "$output"
             exit 1
           fi
-
-          echo "$output" | grep -q 'already exists' && exit 1
 
       - name: Create GitHub_Release
         id: create_release
