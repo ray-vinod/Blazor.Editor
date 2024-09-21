@@ -69,6 +69,7 @@ public partial class Editor
     public async Task<string?> GetContentAsync()
     {
         await _module!.InvokeAsync<string>("getQuillContents");
+
         if (_contentAvailable)
         {
             _contentAvailable = false;
@@ -91,10 +92,10 @@ public partial class Editor
     public async Task ShowImageModal()
     {
         _isImageModalVisible = true;
-        var jsonImage = await _module!.InvokeAsync<string>("fetchImagesAsync");
+        var imageJson = await _module!.InvokeAsync<string>("fetchImagesAsync");
         var options = Options();
 
-        _images = JsonSerializer.Deserialize<List<ImageFile>>(jsonImage, options);
+        _images = JsonSerializer.Deserialize<List<ImageFile>>(imageJson, options);
         _filteredImages = _images!;
 
         StateHasChanged();
@@ -103,19 +104,30 @@ public partial class Editor
     private async Task ImageClicked(ImageFile image)
     {
         _isImageModalVisible = false;
-        bool isUrl = string.IsNullOrWhiteSpace(image.Src);
+        bool isUrl = IsValidUrl(image.Src);
         await _module!.InvokeVoidAsync("insertImage", isUrl, image.Src, image.Alt);
         StateHasChanged();
     }
 
-    private static JsonSerializerOptions Options()
+    public static bool IsValidUrl(string url)
     {
-        JsonSerializerOptions jsonSerializerOptions = new()
+        if (Uri.TryCreate(url, UriKind.Absolute, out Uri? uriResult))
+        {
+            if (uriResult != null)
+            {
+                bool result = uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps;
+                return result;
+            }
+        }
+        return false;
+    }
+    private JsonSerializerOptions Options()
+    {
+        JsonSerializerOptions options = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
         };
-        var options = jsonSerializerOptions;
         return options;
     }
 
