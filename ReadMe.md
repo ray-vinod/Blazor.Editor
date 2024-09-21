@@ -8,13 +8,13 @@ Very simple to use add nuget package and use it.
 
 In this version 2.0.3 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
 
-#### New Features in this version:
+## New Features in this version:
 
-	Image resize can be done from top and bottom
-  	Compact resize toolbar
-  	Image drop enable
-  	Dropped image inserted into editor as base64 string
-  	Getter and Setter by quilljs Delta object
+Image resize can be done from top and bottom
+Compact resize toolbar
+Image drop enable
+Dropped image inserted into editor as base64 string
+Getter and Setter by quilljs Delta object
 
 ## How to add package into project
 
@@ -100,20 +100,20 @@ dotnet add package Blazor.Editor --version 2.0.3
 
 ### Editor
 
-![Editor](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/editor.jpg)
+![Editor](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/editor.jpg)
 
 ### Image selection
 
-![Image selection](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-choosing.jpg)
+![Image selection](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-choosing.jpg)
 
 ### Image into editor
 
-![Inserted image](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-in-editor.jpg)
+![Inserted image](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-in-editor.jpg)
 
 ### Resize and Format options
 
-![Resize and Format](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/resize-options.jpg)
+![Resize and Format](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/resize-options.jpg)
 
 ### Quilljs Delta Object
 
-![Delta Object](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/delta-object.jpg)
+![Delta Object](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/delta-object.jpg)
