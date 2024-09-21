@@ -17,8 +17,8 @@ public partial class Editor
 
     [Parameter] public string GalleryUrl { get; set; } = "/api/images/gallery";
 
-    private bool _returnHtmlContent = false;
-    StringBuilder _chunks = new();
+    private bool _contentAvailable = false;
+    private StringBuilder _chunks = new();
 
     private List<ImageFile> _filteredImages = [];
     private List<ImageFile>? _images;
@@ -51,9 +51,9 @@ public partial class Editor
     {
         await _module!.InvokeAsync<string>("getQuillHTML");
 
-        if (_returnHtmlContent)
+        if (_contentAvailable)
         {
-            _returnHtmlContent = false;
+            _contentAvailable = false;
             return _chunks.ToString();
         }
         return string.Empty;
@@ -69,23 +69,21 @@ public partial class Editor
     public async Task<string?> GetContentAsync()
     {
         await _module!.InvokeAsync<string>("getQuillContents");
-
-        if (_returnHtmlContent)
+        if (_contentAvailable)
         {
-            _returnHtmlContent = false;
-            var content = _chunks.ToString().ToDelta();
+            _contentAvailable = false;
             return _chunks.ToString();
         }
         return string.Empty;
     }
 
     [JSInvokable]
-    public void ReceiveDataChunk(string chunk, int index, int totalChunks)
+    public void DataReceived(string chunk, int index, int totalChunks)
     {
         _chunks.Append(chunk);
         if (index == totalChunks - 1)
         {
-            _returnHtmlContent = true;
+            _contentAvailable = true;
         }
     }
 

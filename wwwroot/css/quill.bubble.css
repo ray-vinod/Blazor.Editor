@@ -5,8 +5,14 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+.ql-bubble,
+.ql-bubble *,
+.ql-container,
+.ql-editor {
+    box-sizing: border-box
+}
+
 .ql-container {
-    box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 13px;
     height: 100%;
@@ -14,6 +20,9 @@
     position: relative
 }
 
+.ql-bubble .ql-out-bottom,
+.ql-bubble .ql-out-top,
+.ql-bubble .ql-tooltip.ql-editing .ql-formats,
 .ql-container.ql-disabled .ql-tooltip {
     visibility: hidden
 }
@@ -31,17 +40,26 @@
     top: 50%
 }
 
-.ql-clipboard p {
+.ql-clipboard p,
+.ql-editor blockquote,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6,
+.ql-editor ol,
+.ql-editor p,
+.ql-editor pre {
     margin: 0;
     padding: 0
 }
 
 .ql-editor {
-    box-sizing: border-box;
     counter-reset: list-0 list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
     line-height: 1.42;
     height: 100%;
-    outline: none;
+    outline: 0;
     overflow-y: auto;
     padding: 12px 15px;
     tab-size: 4;
@@ -55,48 +73,10 @@
     cursor: text
 }
 
-.ql-editor p,
-.ql-editor ol,
-.ql-editor pre,
-.ql-editor blockquote,
-.ql-editor h1,
-.ql-editor h2,
-.ql-editor h3,
-.ql-editor h4,
-.ql-editor h5,
-.ql-editor h6 {
-    margin: 0;
-    padding: 0
-}
-
-@supports (counter-set:none) {
-
-    .ql-editor p,
-    .ql-editor h1,
-    .ql-editor h2,
-    .ql-editor h3,
-    .ql-editor h4,
-    .ql-editor h5,
-    .ql-editor h6 {
-        counter-set: list-0 list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-
-    .ql-editor p,
-    .ql-editor h1,
-    .ql-editor h2,
-    .ql-editor h3,
-    .ql-editor h4,
-    .ql-editor h5,
-    .ql-editor h6 {
-        counter-reset: list-0 list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
 .ql-editor table {
-    border-collapse: collapse
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%
 }
 
 .ql-editor td {
@@ -104,13 +84,13 @@
     padding: 2px 5px
 }
 
+.ql-editor li,
 .ql-editor ol {
     padding-left: 1.5em
 }
 
 .ql-editor li {
     list-style-type: none;
-    padding-left: 1.5em;
     position: relative
 }
 
@@ -140,18 +120,6 @@
     content: '\2610'
 }
 
-@supports (counter-set:none) {
-    .ql-editor li[data-list] {
-        counter-set: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list] {
-        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
 .ql-editor li[data-list=ordered] {
     counter-increment: list-0
 }
@@ -168,36 +136,12 @@
     content: counter(list-1, lower-alpha) '. '
 }
 
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-1 {
-        counter-set: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-1 {
-        counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
 .ql-editor li[data-list=ordered].ql-indent-2 {
     counter-increment: list-2
 }
 
 .ql-editor li[data-list=ordered].ql-indent-2>.ql-ui:before {
     content: counter(list-2, lower-roman) '. '
-}
-
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-2 {
-        counter-set: list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-2 {
-        counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9
-    }
 }
 
 .ql-editor li[data-list=ordered].ql-indent-3 {
@@ -208,36 +152,12 @@
     content: counter(list-3, decimal) '. '
 }
 
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-3 {
-        counter-set: list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-3 {
-        counter-reset: list-4 list-5 list-6 list-7 list-8 list-9
-    }
-}
-
 .ql-editor li[data-list=ordered].ql-indent-4 {
     counter-increment: list-4
 }
 
 .ql-editor li[data-list=ordered].ql-indent-4>.ql-ui:before {
     content: counter(list-4, lower-alpha) '. '
-}
-
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-4 {
-        counter-set: list-5 list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-4 {
-        counter-reset: list-5 list-6 list-7 list-8 list-9
-    }
 }
 
 .ql-editor li[data-list=ordered].ql-indent-5 {
@@ -248,18 +168,6 @@
     content: counter(list-5, lower-roman) '. '
 }
 
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-5 {
-        counter-set: list-6 list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-5 {
-        counter-reset: list-6 list-7 list-8 list-9
-    }
-}
-
 .ql-editor li[data-list=ordered].ql-indent-6 {
     counter-increment: list-6
 }
@@ -268,36 +176,12 @@
     content: counter(list-6, decimal) '. '
 }
 
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-6 {
-        counter-set: list-7 list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-6 {
-        counter-reset: list-7 list-8 list-9
-    }
-}
-
 .ql-editor li[data-list=ordered].ql-indent-7 {
     counter-increment: list-7
 }
 
 .ql-editor li[data-list=ordered].ql-indent-7>.ql-ui:before {
     content: counter(list-7, lower-alpha) '. '
-}
-
-@supports (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-7 {
-        counter-set: list-8 list-9
-    }
-}
-
-@supports not (counter-set:none) {
-    .ql-editor li[data-list].ql-indent-7 {
-        counter-reset: list-8 list-9
-    }
 }
 
 .ql-editor li[data-list=ordered].ql-indent-8 {
@@ -309,12 +193,98 @@
 }
 
 @supports (counter-set:none) {
+
+    .ql-editor h1,
+    .ql-editor h2,
+    .ql-editor h3,
+    .ql-editor h4,
+    .ql-editor h5,
+    .ql-editor h6,
+    .ql-editor p {
+        counter-set: list-0 list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list] {
+        counter-set: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-1 {
+        counter-set: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-2 {
+        counter-set: list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-3 {
+        counter-set: list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-4 {
+        counter-set: list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-5 {
+        counter-set: list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-6 {
+        counter-set: list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-7 {
+        counter-set: list-8 list-9
+    }
+
     .ql-editor li[data-list].ql-indent-8 {
         counter-set: list-9
     }
 }
 
 @supports not (counter-set:none) {
+
+    .ql-editor h1,
+    .ql-editor h2,
+    .ql-editor h3,
+    .ql-editor h4,
+    .ql-editor h5,
+    .ql-editor h6,
+    .ql-editor p {
+        counter-reset: list-0 list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list] {
+        counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-1 {
+        counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-2 {
+        counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-3 {
+        counter-reset: list-4 list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-4 {
+        counter-reset: list-5 list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-5 {
+        counter-reset: list-6 list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-6 {
+        counter-reset: list-7 list-8 list-9
+    }
+
+    .ql-editor li[data-list].ql-indent-7 {
+        counter-reset: list-8 list-9
+    }
+
     .ql-editor li[data-list].ql-indent-8 {
         counter-reset: list-9
     }
@@ -482,13 +452,10 @@
     text-align: left
 }
 
-.ql-editor table {
-    table-layout: fixed;
-    width: 100%
-}
-
+.ql-bubble .ql-toolbar button:active:hover,
+.ql-bubble.ql-toolbar button:active:hover,
 .ql-editor table td {
-    outline: none
+    outline: 0
 }
 
 .ql-editor .ql-code-block-container {
@@ -508,6 +475,7 @@
     margin: 0 0 0 auto
 }
 
+.ql-bubble .ql-color-picker.ql-color .ql-picker-item,
 .ql-editor .ql-bg-black {
     background-color: #000
 }
@@ -536,6 +504,20 @@
     background-color: #93f
 }
 
+.ql-bubble .ql-toolbar .ql-picker-item.ql-selected,
+.ql-bubble .ql-toolbar .ql-picker-item:hover,
+.ql-bubble .ql-toolbar .ql-picker-label.ql-active,
+.ql-bubble .ql-toolbar .ql-picker-label:hover,
+.ql-bubble .ql-toolbar button.ql-active,
+.ql-bubble .ql-toolbar button:focus,
+.ql-bubble .ql-toolbar button:hover,
+.ql-bubble.ql-toolbar .ql-picker-item.ql-selected,
+.ql-bubble.ql-toolbar .ql-picker-item:hover,
+.ql-bubble.ql-toolbar .ql-picker-label.ql-active,
+.ql-bubble.ql-toolbar .ql-picker-label:hover,
+.ql-bubble.ql-toolbar button.ql-active,
+.ql-bubble.ql-toolbar button:focus,
+.ql-bubble.ql-toolbar button:hover,
 .ql-editor .ql-color-white {
     color: #fff
 }
@@ -564,10 +546,12 @@
     color: #93f
 }
 
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=serif]::before,
 .ql-editor .ql-font-serif {
     font-family: Georgia, Times New Roman, serif
 }
 
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before,
 .ql-editor .ql-font-monospace {
     font-family: Monaco, Courier New, monospace
 }
@@ -576,6 +560,8 @@
     font-size: .75em
 }
 
+.ql-bubble .ql-editor h2,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="2"]::before,
 .ql-editor .ql-size-large {
     font-size: 1.5em
 }
@@ -606,7 +592,7 @@
 }
 
 .ql-editor.ql-blank::before {
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, .6);
     content: attr(data-placeholder);
     font-style: italic;
     left: 15px;
@@ -615,16 +601,17 @@
     right: 15px
 }
 
-.ql-bubble.ql-toolbar:after,
-.ql-bubble .ql-toolbar:after {
+.ql-bubble .ql-formats:after,
+.ql-bubble .ql-toolbar:after,
+.ql-bubble.ql-toolbar:after {
     clear: both;
     content: '';
     display: table
 }
 
-.ql-bubble.ql-toolbar button,
-.ql-bubble .ql-toolbar button {
-    background: none;
+.ql-bubble .ql-toolbar button,
+.ql-bubble.ql-toolbar button {
+    background: 0 0;
     border: none;
     cursor: pointer;
     display: inline-block;
@@ -634,138 +621,103 @@
     width: 28px
 }
 
-.ql-bubble.ql-toolbar button svg,
-.ql-bubble .ql-toolbar button svg {
+.ql-bubble .ql-toolbar button svg,
+.ql-bubble.ql-toolbar button svg {
     float: left;
     height: 100%
 }
 
-.ql-bubble.ql-toolbar button:active:hover,
-.ql-bubble .ql-toolbar button:active:hover {
-    outline: none
-}
-
-.ql-bubble.ql-toolbar input.ql-image[type=file],
-.ql-bubble .ql-toolbar input.ql-image[type=file] {
+.ql-bubble .ql-direction svg:last-child,
+.ql-bubble .ql-direction.ql-active svg:first-child,
+.ql-bubble .ql-hidden,
+.ql-bubble .ql-toolbar input.ql-image[type=file],
+.ql-bubble .ql-tooltip-editor,
+.ql-bubble.ql-toolbar input.ql-image[type=file] {
     display: none
 }
 
-.ql-bubble.ql-toolbar button:hover,
-.ql-bubble .ql-toolbar button:hover,
-.ql-bubble.ql-toolbar button:focus,
-.ql-bubble .ql-toolbar button:focus,
-.ql-bubble.ql-toolbar button.ql-active,
-.ql-bubble .ql-toolbar button.ql-active,
-.ql-bubble.ql-toolbar .ql-picker-label:hover,
-.ql-bubble .ql-toolbar .ql-picker-label:hover,
-.ql-bubble.ql-toolbar .ql-picker-label.ql-active,
-.ql-bubble .ql-toolbar .ql-picker-label.ql-active,
-.ql-bubble.ql-toolbar .ql-picker-item:hover,
-.ql-bubble .ql-toolbar .ql-picker-item:hover,
-.ql-bubble.ql-toolbar .ql-picker-item.ql-selected,
-.ql-bubble .ql-toolbar .ql-picker-item.ql-selected {
-    color: #fff
-}
-
-.ql-bubble.ql-toolbar button:hover .ql-fill,
-.ql-bubble .ql-toolbar button:hover .ql-fill,
-.ql-bubble.ql-toolbar button:focus .ql-fill,
-.ql-bubble .ql-toolbar button:focus .ql-fill,
-.ql-bubble.ql-toolbar button.ql-active .ql-fill,
-.ql-bubble .ql-toolbar button.ql-active .ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-item:hover .ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
 .ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
-.ql-bubble.ql-toolbar button:hover .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar button:hover .ql-stroke.ql-fill,
-.ql-bubble.ql-toolbar button:focus .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar button:focus .ql-stroke.ql-fill,
-.ql-bubble.ql-toolbar button.ql-active .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar button.ql-active .ql-stroke.ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
-.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-item:hover .ql-fill,
 .ql-bubble .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar button.ql-active .ql-fill,
+.ql-bubble .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar button:focus .ql-fill,
+.ql-bubble .ql-toolbar button:focus .ql-stroke.ql-fill,
+.ql-bubble .ql-toolbar button:hover .ql-fill,
+.ql-bubble .ql-toolbar button:hover .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
 .ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
-.ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar button.ql-active .ql-fill,
+.ql-bubble.ql-toolbar button.ql-active .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar button:focus .ql-fill,
+.ql-bubble.ql-toolbar button:focus .ql-stroke.ql-fill,
+.ql-bubble.ql-toolbar button:hover .ql-fill,
+.ql-bubble.ql-toolbar button:hover .ql-stroke.ql-fill {
     fill: #fff
 }
 
-.ql-bubble.ql-toolbar button:hover .ql-stroke,
-.ql-bubble .ql-toolbar button:hover .ql-stroke,
-.ql-bubble.ql-toolbar button:focus .ql-stroke,
-.ql-bubble .ql-toolbar button:focus .ql-stroke,
-.ql-bubble.ql-toolbar button.ql-active .ql-stroke,
-.ql-bubble .ql-toolbar button.ql-active .ql-stroke,
-.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke,
-.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke,
-.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
-.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
-.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke,
-.ql-bubble .ql-toolbar .ql-picker-item:hover .ql-stroke,
-.ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
 .ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
-.ql-bubble.ql-toolbar button:hover .ql-stroke-miter,
-.ql-bubble .ql-toolbar button:hover .ql-stroke-miter,
-.ql-bubble.ql-toolbar button:focus .ql-stroke-miter,
-.ql-bubble .ql-toolbar button:focus .ql-stroke-miter,
-.ql-bubble.ql-toolbar button.ql-active .ql-stroke-miter,
-.ql-bubble .ql-toolbar button.ql-active .ql-stroke-miter,
-.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
-.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
-.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
-.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
-.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+.ql-bubble .ql-toolbar .ql-picker-item:hover .ql-stroke,
 .ql-bubble .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-bubble .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-bubble .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-bubble .ql-toolbar button.ql-active .ql-stroke,
+.ql-bubble .ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-bubble .ql-toolbar button:focus .ql-stroke,
+.ql-bubble .ql-toolbar button:focus .ql-stroke-miter,
+.ql-bubble .ql-toolbar button:hover .ql-stroke,
+.ql-bubble .ql-toolbar button:hover .ql-stroke-miter,
+.ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
 .ql-bubble.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
-.ql-bubble .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-bubble.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-bubble.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-bubble.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-bubble.ql-toolbar button.ql-active .ql-stroke,
+.ql-bubble.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-bubble.ql-toolbar button:focus .ql-stroke,
+.ql-bubble.ql-toolbar button:focus .ql-stroke-miter,
+.ql-bubble.ql-toolbar button:hover .ql-stroke,
+.ql-bubble.ql-toolbar button:hover .ql-stroke-miter {
     stroke: #fff
 }
 
 @media (pointer:coarse) {
 
-    .ql-bubble.ql-toolbar button:hover:not(.ql-active),
-    .ql-bubble .ql-toolbar button:hover:not(.ql-active) {
+    .ql-bubble .ql-toolbar button:hover:not(.ql-active),
+    .ql-bubble.ql-toolbar button:hover:not(.ql-active) {
         color: #ccc
     }
 
-    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-fill,
     .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-fill,
-    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
-    .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+    .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-fill,
+    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
         fill: #ccc
     }
 
-    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
     .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
-    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
-    .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+    .ql-bubble .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+    .ql-bubble.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
         stroke: #ccc
     }
-}
-
-.ql-bubble {
-    box-sizing: border-box
-}
-
-.ql-bubble * {
-    box-sizing: border-box
-}
-
-.ql-bubble .ql-hidden {
-    display: none
-}
-
-.ql-bubble .ql-out-bottom,
-.ql-bubble .ql-out-top {
-    visibility: hidden
 }
 
 .ql-bubble .ql-tooltip {
@@ -785,12 +737,6 @@
 .ql-bubble .ql-formats {
     display: inline-block;
     vertical-align: middle
-}
-
-.ql-bubble .ql-formats:after {
-    clear: both;
-    content: '';
-    display: table
 }
 
 .ql-bubble .ql-stroke {
@@ -821,8 +767,8 @@
     fill-rule: evenodd
 }
 
-.ql-bubble .ql-thin,
-.ql-bubble .ql-stroke.ql-thin {
+.ql-bubble .ql-stroke.ql-thin,
+.ql-bubble .ql-thin {
     stroke-width: 1
 }
 
@@ -830,39 +776,32 @@
     opacity: .4
 }
 
-.ql-bubble .ql-direction svg:last-child {
-    display: none
-}
-
 .ql-bubble .ql-direction.ql-active svg:last-child {
     display: inline
 }
 
-.ql-bubble .ql-direction.ql-active svg:first-child {
-    display: none
-}
-
-.ql-bubble .ql-editor h1 {
+.ql-bubble .ql-editor h1,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
     font-size: 2em
 }
 
-.ql-bubble .ql-editor h2 {
-    font-size: 1.5em
-}
-
-.ql-bubble .ql-editor h3 {
+.ql-bubble .ql-editor h3,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
     font-size: 1.17em
 }
 
-.ql-bubble .ql-editor h4 {
+.ql-bubble .ql-editor h4,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
     font-size: 1em
 }
 
-.ql-bubble .ql-editor h5 {
+.ql-bubble .ql-editor h5,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
     font-size: .83em
 }
 
-.ql-bubble .ql-editor h6 {
+.ql-bubble .ql-editor h6,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
     font-size: .67em
 }
 
@@ -877,8 +816,8 @@
     padding-left: 16px
 }
 
-.ql-bubble .ql-editor code,
-.ql-bubble .ql-editor .ql-code-block-container {
+.ql-bubble .ql-editor .ql-code-block-container,
+.ql-bubble .ql-editor code {
     background-color: #f0f0f0;
     border-radius: 3px
 }
@@ -886,18 +825,15 @@
 .ql-bubble .ql-editor .ql-code-block-container {
     margin-bottom: 5px;
     margin-top: 5px;
-    padding: 5px 10px
+    padding: 5px 10px;
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible
 }
 
 .ql-bubble .ql-editor code {
     font-size: 85%;
     padding: 2px 4px
-}
-
-.ql-bubble .ql-editor .ql-code-block-container {
-    background-color: #23241f;
-    color: #f8f8f2;
-    overflow: visible
 }
 
 .ql-bubble .ql-editor img {
@@ -1013,126 +949,88 @@
     width: 18px
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-label]:not([data-label=''])::before,
-.ql-bubble .ql-picker.ql-font .ql-picker-label[data-label]:not([data-label=''])::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-label]:not([data-label=''])::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-label]:not([data-label=''])::before,
 .ql-bubble .ql-picker.ql-font .ql-picker-item[data-label]:not([data-label=''])::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-label]:not([data-label=''])::before {
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-label]:not([data-label=''])::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-label]:not([data-label=''])::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-label]:not([data-label=''])::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-label]:not([data-label=''])::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-label]:not([data-label=''])::before {
     content: attr(data-label)
 }
 
-.ql-bubble .ql-picker.ql-header {
+.ql-bubble .ql-picker.ql-header,
+.ql-bubble .ql-picker.ql-size {
     width: 98px
 }
 
+.ql-bubble .ql-picker.ql-header .ql-picker-item::before,
 .ql-bubble .ql-picker.ql-header .ql-picker-label::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item::before {
+.ql-bubble .ql-picker.ql-size .ql-picker-item::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label::before {
     content: 'Normal'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="1"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="1"]::before {
     content: 'Heading 1'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="2"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="2"]::before {
     content: 'Heading 2'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="3"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="3"]::before {
     content: 'Heading 3'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="4"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="4"]::before {
     content: 'Heading 4'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="5"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="5"]::before {
     content: 'Heading 5'
 }
 
-.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="6"]::before,
+.ql-bubble .ql-picker.ql-header .ql-picker-label[data-value="6"]::before {
     content: 'Heading 6'
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
-    font-size: 2em
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
-    font-size: 1.5em
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-    font-size: 1.17em
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
-    font-size: 1em
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
-    font-size: .83em
-}
-
-.ql-bubble .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
-    font-size: .67em
 }
 
 .ql-bubble .ql-picker.ql-font {
     width: 108px
 }
 
-.ql-bubble .ql-picker.ql-font .ql-picker-label::before,
-.ql-bubble .ql-picker.ql-font .ql-picker-item::before {
+.ql-bubble .ql-picker.ql-font .ql-picker-item::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-label::before {
     content: 'Sans Serif'
 }
 
-.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
-.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=serif]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=serif]::before {
     content: 'Serif'
 }
 
-.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
-.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before {
     content: 'Monospace'
 }
 
-.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
-    font-family: Georgia, Times New Roman, serif
-}
-
-.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
-    font-family: Monaco, Courier New, monospace
-}
-
-.ql-bubble .ql-picker.ql-size {
-    width: 98px
-}
-
-.ql-bubble .ql-picker.ql-size .ql-picker-label::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item::before {
-    content: 'Normal'
-}
-
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=small]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=small]::before {
     content: 'Small'
 }
 
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=large]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=large]::before {
     content: 'Large'
 }
 
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value=huge]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value=huge]::before {
     content: 'Huge'
 }
 
@@ -1150,10 +1048,6 @@
 
 .ql-bubble .ql-color-picker.ql-background .ql-picker-item {
     background-color: #fff
-}
-
-.ql-bubble .ql-color-picker.ql-color .ql-picker-item {
-    background-color: #000
 }
 
 .ql-code-block-container {
@@ -1212,21 +1106,13 @@
     display: block
 }
 
-.ql-bubble .ql-tooltip.ql-editing .ql-formats {
-    visibility: hidden
-}
-
-.ql-bubble .ql-tooltip-editor {
-    display: none
-}
-
 .ql-bubble .ql-tooltip-editor input[type=text] {
-    background: transparent;
+    background: 0 0;
     border: none;
     color: #fff;
     font-size: 13px;
     height: 100%;
-    outline: none;
+    outline: 0;
     padding: 10px 20px;
     position: absolute;
     width: 100%
@@ -1242,7 +1128,7 @@
     color: #ccc;
     content: "\00D7";
     font-size: 16px;
-    font-weight: bold
+    font-weight: 700
 }
 
 .ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close) {
@@ -1257,7 +1143,7 @@
     font-size: 12px;
     color: #fff;
     content: attr(href);
-    font-weight: normal;
+    font-weight: 400;
     overflow: hidden;
     padding: 5px 15px;
     text-decoration: none;
@@ -1274,19 +1160,17 @@
     width: 0
 }
 
-.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close)::before,
-.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close)::after {
+.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close)::after,
+.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close)::before {
     left: 0;
     margin-left: 50%;
     position: absolute;
     transform: translate(-50%, -100%);
-    transition: visibility 0s ease 200ms;
+    transition: visibility 0s .2s;
     visibility: hidden
 }
 
-.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close):hover::before,
-.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close):hover::after {
+.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close):hover::after,
+.ql-container.ql-bubble:not(.ql-disabled) a:not(.ql-close):hover::before {
     visibility: visible
 }
-
-/*# sourceMappingURL=quill.bubble.css.map*/
