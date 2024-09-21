@@ -100,20 +100,20 @@ dotnet add package Blazor.Editor --version 2.0.3
 
 ### Editor
 
-![Editor](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/editor.jpg?token=GHSAT0AAAAAACXYVYAAPQCHCEJXCSRPYOHQZXOU3SQ)
+![Editor](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/editor.jpg)
 
 ### Image selection
 
-![Image selection](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-choosing.jpg?token=GHSAT0AAAAAACXYVYAAL3HZTZIO7QG63PN4ZXOU4EQ)
+![Image selection](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-choosing.jpg)
 
 ### Image into editor
 
-![Inserted image](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-in-editor.jpg?token=GHSAT0AAAAAACXYVYAAGGCH7BGNAN5V6Y2UZXOU4YQ)
+![Inserted image](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-in-editor.jpg)
 
 ### Resize and Format options
 
-![Resize and Format](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/resize-options.jpg?token=GHSAT0AAAAAACXYVYAAHXYHEBTCH6WXBU7SZXOU5JA)
+![Resize and Format](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/resize-options.jpg)
 
 ### Quilljs Delta Object
 
-![Delta Object](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/delta-object.jpg?token=GHSAT0AAAAAACXYVYAAE63OOQH57TZZVWBQZXOU5XA)
+![Delta Object](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/delta-object.jpg)
