@@ -21,7 +21,9 @@ Getter and Setter by quilljs Delta object
 ```
 dotnet add package Blazor.Editor --version 2.0.3
 ```
+## How to use it
 
+```
 <div>
 	@*GalleryUrl is endpoint of your server's image gallery to show image list, if api endpoint is not provided then url image link is still working*@
 	<Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />
@@ -98,22 +100,14 @@ dotnet add package Blazor.Editor --version 2.0.3
 }
 ```
 
-### Editor
+### Editor Picture
 
 ![Editor](/Images/editor.jpg)
 
-### Image selection
-
 ![Image selection](/Images/image-choosing.jpg)
-
-### Image into editor
 
 ![Inserted image](/Images/image-in-editor.jpg)
 
-### Resize and Format options
-
 ![Resize and Format](/Images/resize-options.jpg)
-
-### Quilljs Delta Object
 
 ![Delta Object](/Images/delta-object.jpg)
