@@ -57,7 +57,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "bin/Release/*.nupkg"
-          asset_name: "YourPackageName.${{ github.ref_name }}.nupkg"
+          asset_name: "Blazor.Editor.${{ github.ref_name }}.nupkg"
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GH_API_Secret }}
