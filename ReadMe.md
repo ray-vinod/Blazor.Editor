@@ -102,12 +102,12 @@ dotnet add package Blazor.Editor --version 2.0.3
 
 ### Editor Picture
 
-![Editor](/Images/editor.jpg)
+![Editor]([/Images/editor.jpg](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/editor.jpg))
 
-![Image selection](/Images/image-choosing.jpg)
+![Image selection]([/Images/image-choosing.jpg](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-choosing.jpg))
 
-![Inserted image](/Images/image-in-editor.jpg)
+![Inserted image](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/image-in-editor.jpg)
 
-![Resize and Format](/Images/resize-options.jpg)
+![Resize and Format](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/resize-options.jpg)
 
-![Delta Object](/Images/delta-object.jpg)
+![Delta Object](https://raw.githubusercontent.com/ray-vinod/Blazor.Editor/refs/heads/main/Images/delta-object.jpg)
