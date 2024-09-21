@@ -10,11 +10,11 @@ In this version 2.0.3 has update ui and core functions improvements like image s
 
 #### New Features in this version:
 
-	- Image resize can be done from top and bottom
-	- Compact resize toolbar
-	- Image drop enable
-	- Dropped image inserted into editor as base64 string
-	- Getter and Setter by quilljs Delta object
+	Image resize can be done from top and bottom
+  	Compact resize toolbar
+  	Image drop enable
+  	Dropped image inserted into editor as base64 string
+  	Getter and Setter by quilljs Delta object
 
 ## How to add package into project
 
@@ -22,11 +22,6 @@ In this version 2.0.3 has update ui and core functions improvements like image s
 dotnet add package Blazor.Editor --version 2.0.3
 ```
 
-## nuget package link
-
-[https://www.nuget.org/packages/Blazor.Editor/]()
-
-```
 <div>
 	@*GalleryUrl is endpoint of your server's image gallery to show image list, if api endpoint is not provided then url image link is still working*@
 	<Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />
@@ -105,20 +100,20 @@ dotnet add package Blazor.Editor --version 2.0.3
 
 ### Editor
 
-![Editor](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/editor.jpg?token=GHSAT0AAAAAACXYVYABIKUGKQJCNFNR2NOQZXOPMIQ)
+![Editor](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/editor.jpg?token=GHSAT0AAAAAACXYVYAAPQCHCEJXCSRPYOHQZXOU3SQ)
 
 ### Image selection
 
-![Image selection](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-choosing.jpg?token=GHSAT0AAAAAACXYVYAAN3FA3FKVAOHVENOQZXOPL3Q)
+![Image selection](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-choosing.jpg?token=GHSAT0AAAAAACXYVYAAL3HZTZIO7QG63PN4ZXOU4EQ)
 
 ### Image into editor
 
-![Inserted image](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-in-editor.jpg?token=GHSAT0AAAAAACXYVYAAC2ELW6TGXDNZV2IKZXOPLOA)
+![Inserted image](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/image-in-editor.jpg?token=GHSAT0AAAAAACXYVYAAGGCH7BGNAN5V6Y2UZXOU4YQ)
 
 ### Resize and Format options
 
-![Resize and Format](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/resize-options.jpg?token=GHSAT0AAAAAACXYVYAANTTY7EJTJVUMWACQZXOPK3A)
+![Resize and Format](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/resize-options.jpg?token=GHSAT0AAAAAACXYVYAAHXYHEBTCH6WXBU7SZXOU5JA)
 
 ### Quilljs Delta Object
 
-![Delta Object]([/Blog/wwwroot/readmeImages/delta-object.jpg](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/delta-object.jpg?token=GHSAT0AAAAAACXYVYABIRUUX5LBGMMKGWR6ZXOPJRA))
+![Delta Object](https://raw.githubusercontent.com/ray-vinod/BlogApp/refs/heads/image-drop-re/Blog/wwwroot/readmeImages/delta-object.jpg?token=GHSAT0AAAAAACXYVYAAE63OOQH57TZZVWBQZXOU5XA)
