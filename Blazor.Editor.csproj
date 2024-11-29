@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>Blazor.Editor</PackageId>
-    <Version>2.0.6</Version>
+    <Version>2.0.7</Version>
     <Authors>ray-vinod</Authors>
     <Product>BlazorEditor</Product>
     <Company>ray-vinod</Company>
     <Title>Blazor Editor</Title>
     <PackageIcon></PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageDescription>It is quilljs@2.0.2 implemented blzor editor with get and set content</PackageDescription>
+    <PackageDescription>It is quilljs@2.0.2 implemented blazor editor with get and set content</PackageDescription>
     <PackageTags>Blazor.Quill;Blazor Quill;BlazorEditor;Blazor Editor;Blazor.Editor;Editor;EditorImageTool;EditorImageResize;Blog;BlogEditor;</PackageTags>
     <PackageProjectUrl>https://github.com/ray-vinod/Blazor.Editor.git</PackageProjectUrl>
     <License>MIT</License>
@@ -23,12 +23,13 @@
     <None Include="Images/**" Pack="false" />
   </ItemGroup>
 
+
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

@@ -34,7 +34,6 @@ public static class DeltaHandler
     }
 }
 
-
 public class Delta(List<Operation> ops)
 {
     [JsonPropertyName("ops")]

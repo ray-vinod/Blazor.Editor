@@ -1,8 +1,10 @@
+@using System.Text.Json
+
 @if (IsVisible)
 {
     <div class="g-modal-container">
     <div class="g-modal-content">
-        <!-- Modal titlebar -->
+        <!-- Modal title bar -->
         <div class="g-modal-bar">
             <div class="g-modal-title">Image Gallery</div>
             <button @onclick="CloseModal" class="g-modal-close">X</button>
@@ -27,42 +29,4 @@
             </div>
         </div>
     </div>
-}
-
-@code {
-    [Parameter]public List<ImageFile>? Images { get; set; }
-    [Parameter] public EventCallback<ImageFile> OnImageClicked { get; set; }
-    [Parameter] public bool IsVisible { get; set; } = false;
-    [Parameter] public EventCallback OnClose { get; set; }
-    [Parameter] public EventCallback<ChangeEventArgs> OnSearchTexChanged { get; set; }
-
-    private string? _linkUrl;
-
-    private void OnImageClick(ImageFile image)
-    {
-        OnImageClicked.InvokeAsync(image);
-    }
-
-    private void OnLinkClick()
-    {
-        if (!string.IsNullOrWhiteSpace(_linkUrl))
-        {
-            OnImageClicked.InvokeAsync(new ImageFile
-                {
-                    Src = _linkUrl,
-                    Alt = string.Empty
-                });
-        }
-    }
-
-    private async Task OnSearchInput(ChangeEventArgs e)
-    {
-        await OnSearchTexChanged.InvokeAsync(e);
-    }
-
-    private void CloseModal()
-    {
-        IsVisible = false;
-        OnClose.InvokeAsync();
-    }
 }
