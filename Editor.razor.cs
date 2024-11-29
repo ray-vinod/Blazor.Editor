@@ -47,7 +47,7 @@ public partial class Editor
         await _module!.InvokeVoidAsync("setQuillHTML", html);
     }
 
-    public async Task<string?> GetHTMLAsync()
+    public async Task<string> GetHTMLAsync()
     {
         await _module!.InvokeAsync<string>("getQuillHTML");
 
@@ -66,7 +66,7 @@ public partial class Editor
         await _module!.InvokeVoidAsync("setQuillContents", deltaJson);
     }
 
-    public async Task<string?> GetContentAsync()
+    public async Task<string> GetContentAsync()
     {
         await _module!.InvokeAsync<string>("getQuillContents");
 

@@ -2,14 +2,17 @@
 
 It is a quilljs based richtext editor.
 
-it's accept ReadOnly, Placeholder, Theme, Height and endpoint url to insert image etc
+It's best suitable for bloging editor for dotnet framework specially for blazor.
+
+it's accept ReadOnly, Placeholder, Theme, Height and endpoint url to insert image etc.
 
 Very simple to use add nuget package and use it.
 
-In this version 2.0.6 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
+In this version 2.0.7 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
 
 ## New Features in this version:
 
+- It updated for .Net 9.0 and fixed UI
 - Image resize can be done from top and bottom
 - Compact resize toolbar
 - Image drop enable
@@ -19,11 +22,16 @@ In this version 2.0.6 has update ui and core functions improvements like image s
 ## How to add package into project
 
 ```
-dotnet add package Blazor.Editor --version 2.0.6
+dotnet add package Blazor.Editor --version 2.0.7
 ```
 ## How to use it
 
 ```
+@page "/article"
+@rendermode InteractiveServer
+@using Blazor.Editor
+
+
 <div>
 	@*GalleryUrl is endpoint of your server's image gallery to show image list, if api endpoint is not provided then url image link is still working*@
 	<Editor @ref="@_quillNative" GalleryUrl="/api/images/gallery" />
