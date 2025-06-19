@@ -8,7 +8,7 @@ it's accept ReadOnly, Placeholder, Theme, Height and endpoint url to insert imag
 
 Very simple to use add nuget package and use it.
 
-In this version 2.0.7 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
+In this version 2.0.8 has update ui and core functions improvements like image search, resize, align etc and also package size optimized.
 
 ## New Features in this version:
 
@@ -22,7 +22,7 @@ In this version 2.0.7 has update ui and core functions improvements like image s
 ## How to add package into project
 
 ```
-dotnet add package Blazor.Editor --version 2.0.7
+dotnet add package Blazor.Editor --version 2.0.8
 ```
 ## How to use it
 
