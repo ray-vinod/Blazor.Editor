@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate Tag Format
+      - name: Validate Tag
         run: |
-          if [[ ! "${GITHUB_REF}" =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Invalid tag format. Use: v<MAJOR>.<MINOR>.<PATCH> (e.g., v1.0.0)"
+          if [[ ! ${{ github.ref }} =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid Tag & Version"
             exit 1
           fi
 
@@ -34,62 +34,47 @@ jobs:
       - name: Build Project
         run: dotnet build --configuration Release --no-restore
 
-      - name: Create NuGet Package
-        run: dotnet pack --configuration Release --output ./nupkgs
+      - name: Create NuGet
+        run: dotnet pack --configuration Release
 
-      - name: Check for .nupkg
-        run: |
-          if ! ls nupkgs/*.nupkg 1> /dev/null 2>&1; then
-            echo "No .nupkg files found. Exiting."
-            exit 1
-          fi
+      - name: Set Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-      - name: Push to NuGet Gallery
+      - name: Push To NuGet Gallery
         run: |
-          dotnet nuget push "nupkgs/*.nupkg" \
-          --source https://api.nuget.org/v3/index.json \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate || echo "Package already exists on NuGet. Skipping push."
+          dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} \
+          --skip-duplicate || echo "Package Blazor.Editor.${VERSION}.nupkg already exists on NuGet. Skipping push."
 
-      - name: Push to GitHub Packages
+      - name: Push To GitHub
         run: |
-          set +e
-          output=$(dotnet nuget push "nupkgs/*.nupkg" \
-            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-            --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate 2>&1)
-          exit_code=$?
+          output=$(dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_SECRET }} --skip-duplicate)
           echo "$output"
 
           if echo "$output" | grep -q 'already exists'; then
-            echo "Package already exists on GitHub Packages. Skipping push."
-            exit 0
+            echo "$output"
+            exit 1
           fi
 
-          if [ $exit_code -ne 0 ]; then
-            echo "dotnet nuget push failed with exit code $exit_code"
-            exit $exit_code
-          fi
-
-      - name: Create GitHub Release
+      - name: Create GitHub_Release
         id: create_release
         uses: actions/create-release@v1.1.4
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref_name }}
+          release_name: ${{ github.ref }}
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
 
-      - name: Upload .nupkg to GitHub Release
+      - name: Push To GitHub_Release
         uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: $(ls nupkgs/*.nupkg | head -n 1)
-          asset_name: $(basename nupkgs/*.nupkg | head -n 1)
+          asset_path: bin/Release/Blazor.Editor.${ VERSION }.nupkg
+          asset_name: Blazor.Editor.${ VERSION }.nupkg
           asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
 
       - name: Notify Success
         if: success()
