@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate Tag
+      - name: Validate Tag Format
         run: |
-          if [[ ! ${{ github.ref }} =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Invalid Tag & Version"
+          if [[ ! "${GITHUB_REF}" =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid Tag Format. Use vX.Y.Z"
             exit 1
           fi
+
+      - name: Set VERSION
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -35,45 +38,46 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Create NuGet Package
-        run: dotnet pack --configuration Release
+        run: dotnet pack --configuration Release --no-build
 
-      - name: Set VERSION
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: List Built Packages
+        run: ls -al bin/Release/*.nupkg
 
       - name: Push To NuGet Gallery
         run: |
-          dotnet nuget push "bin/Release/*.nupkg" \
-          --source https://api.nuget.org/v3/index.json \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate
+          dotnet nuget push bin/Release/*.nupkg \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --skip-duplicate
 
       - name: Push To GitHub Packages
         run: |
-          dotnet nuget push "bin/Release/*.nupkg" \
-          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-          --api-key ${{ secrets.GH_API_SECRET }} \
-          --skip-duplicate
-
+          dotnet nuget push bin/Release/*.nupkg \
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --api-key ${{ secrets.GH_API_SECRET }} \
+            --skip-duplicate
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1.1.4
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
 
-      - name: Delete existing asset
+      - name: Delete Existing Asset If Exists
         env:
           GH_TOKEN: ${{ secrets.GH_API_SECRET }}
         run: |
-          gh release view ${{ github.ref_name }} \
-          --json assets -q '.assets[].name' | grep "Blazor.Editor.${{ env.VERSION }}.nupkg" && \
-          gh release delete-asset ${{ github.ref_name }} "Blazor.Editor.${{ env.VERSION }}.nupkg" \
-          --yes || echo "Asset not found"
+          ASSET_NAME="Blazor.Editor.${{ env.VERSION }}.nupkg"
+          if gh release view ${{ github.ref_name }} --json assets -q '.assets[].name' | grep "$ASSET_NAME"; then
+            gh release delete-asset ${{ github.ref_name }} "$ASSET_NAME" --yes
+          else
+            echo "No existing asset to delete."
+          fi
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.2
