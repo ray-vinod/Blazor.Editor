@@ -43,7 +43,7 @@ jobs:
       - name: Push To NuGet Gallery
         run: |
           dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate || echo "Package Blazor.Editor.${VERSION}.nupkg already exist."
+          --skip-duplicate || echo "Package Blazor.Editor.${{ env.VERSION }}.nupkg already exists on NuGet. Skipping push."
 
       - name: Push To GitHub
         run: |
@@ -70,8 +70,8 @@ jobs:
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/Release/Blazor.Editor.${ VERSION }.nupkg
-          asset_name: Blazor.Editor.${ VERSION }.nupkg
+          asset_path: bin/Release/Blazor.Editor.${{ env.VERSION }}.nupkg
+          asset_name: Blazor.Editor.${{ env.VERSION }}.nupkg
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
