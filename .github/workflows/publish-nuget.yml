@@ -34,44 +34,37 @@ jobs:
       - name: Build Project
         run: dotnet build --configuration Release --no-restore
 
-      - name: Create NuGet
+      - name: Create NuGet Package
         run: dotnet pack --configuration Release
 
-      - name: Set Version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Set Version and Package Path
+        id: vars
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          PACKAGE_PATH=$(find bin/Release -name "*.nupkg" | head -n 1)
+          echo "PACKAGE_PATH=$PACKAGE_PATH" >> $GITHUB_ENV
+          echo "PACKAGE_NAME=$(basename "$PACKAGE_PATH")" >> $GITHUB_ENV
+        shell: bash
 
       - name: Push To NuGet Gallery
         run: |
-          dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate || echo "Package Blazor.Editor.${{ env.VERSION }}.nupkg already exists on NuGet. Skipping push."
+          dotnet nuget push "$PACKAGE_PATH" \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --skip-duplicate
 
-      - name: Push To GitHub
+      - name: Push To GitHub Packages
         run: |
-          output=$(dotnet nuget push "bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GH_API_SECRET }} --skip-duplicate)
-          echo "$output"
+          dotnet nuget push "$PACKAGE_PATH" \
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --api-key ${{ secrets.GH_API_SECRET }} \
+            --skip-duplicate
 
-          if echo "$output" | grep -q 'already exists'; then
-            echo "$output"
-            exit 1
-          fi
-
-      - name: Create GitHub_Release
-        id: create_release
-        uses: actions/create-release@v1.1.4
+      - name: Create GitHub Release and Upload Asset
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
-
-      - name: Push To GitHub_Release
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/Release/Blazor.Editor.${{ env.VERSION }}.nupkg
-          asset_name: Blazor.Editor.${{ env.VERSION }}.nupkg
-          asset_content_type: application/octet-stream
+          name: Release ${{ github.ref }}
+          files: ${{ env.PACKAGE_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
