@@ -58,11 +58,10 @@ jobs:
             --skip-duplicate
 
       - name: Create GitHub Release
-        id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           draft: false
           prerelease: false
         env:
@@ -79,12 +78,10 @@ jobs:
             echo "No existing asset to delete."
           fi
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/Release/Blazor.Editor.${{ env.VERSION }}.nupkg
-          asset_name: Blazor.Editor.${{ env.VERSION }}.nupkg
-          asset_content_type: application/octet-stream
+      - name: Upload Release Asset (via gh CLI)
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
+          GH_TOKEN: ${{ secrets.GH_API_SECRET }}
+        run: |
+          gh release upload ${{ github.ref_name }} \
+            "bin/Release/Blazor.Editor.${{ env.VERSION }}.nupkg" \
+            --clobber
