@@ -43,7 +43,7 @@ jobs:
       - name: Push To NuGet Gallery
         run: |
           dotnet nuget push "bin/Release/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} \
-          --skip-duplicate || echo "Package Blazor.Editor.${VERSION}.nupkg already exists on NuGet. Skipping push."
+          --skip-duplicate || echo "Package Blazor.Editor.${VERSION}.nupkg already exist."
 
       - name: Push To GitHub
         run: |
@@ -75,11 +75,3 @@ jobs:
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GH_API_SECRET }}
-
-      - name: Notify Success
-        if: success()
-        run: echo "NuGet package published successfully!"
-
-      - name: Notify Failure
-        if: failure()
-        run: echo "Failed to publish NuGet package."
